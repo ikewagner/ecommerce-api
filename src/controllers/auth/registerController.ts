@@ -1,6 +1,5 @@
 import Joi from 'joi';
-import User from '../../models/user';
-import RefreshToken from '../../models/refreshToken';
+import { User, RefreshToken } from '../../models';
 import bcrypt from 'bcrypt';
 import JwtService from '../../services/JwtService';
 import { Request, Response, NextFunction } from 'express';
