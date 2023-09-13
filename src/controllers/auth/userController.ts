@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import User from '../../models/user';
 
 const userController = {
@@ -10,6 +10,13 @@ const userController = {
             console.error(err); // Log the error for debugging purposes
             return res.status(500).json({ message: 'Failed to fetch users' });
         }
+    },
+    async delete(req: Request, res: Response, next: NextFunction){
+        const document = await User.findOneAndRemove({ _id: req.params.id });
+        if (!document) {
+            return next(new Error('Nada para excluir'));
+        }
+        return res.json(document);
     },
 };
 
