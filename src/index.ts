@@ -1,12 +1,14 @@
 import express from "express";
 import routes from "./routes";
 import mongoose from "mongoose";
-import { MONGODB_URL } from "../src/config";
+
 
 // Database connection
 
 const main = async () => {
   const app = express();
+
+  const MONGODB_URL: string = process.env.MONGODB_URL || 'mongodb+srv://ike:1KLqDGi6TTdTMkAt@ecommerce-ike.u4hfc3x.mongodb.net/';
 
   mongoose.connect(MONGODB_URL || "", { monitorCommands: true });
 
