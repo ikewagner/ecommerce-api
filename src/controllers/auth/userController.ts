@@ -1,5 +1,16 @@
 import { Request, Response, NextFunction } from 'express';
 import User from '../../models/user';
+import CustomErrorHandler from '../../services/CustomErrorHandler';
+
+
+// Extend the default Request object to include the user property
+interface AuthenticatedRequest extends Request {
+    user?: {
+        _id: string;
+        role: string;
+    };
+}
+
 
 const userController = {
     async index(req: Request, res: Response) {
@@ -18,6 +29,17 @@ const userController = {
         }
         return res.json(document);
     },
+    async me(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+        try {
+            const user = await User.findOne({ _id: req.user }).select('-password -updatedAt -__v');
+            if (!user) {
+                return next(CustomErrorHandler.notFound());
+            }
+            res.json(user);
+        } catch(err) {
+           return next(err);
+        }
+    }
 };
 
 export default userController;

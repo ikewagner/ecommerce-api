@@ -1,21 +1,36 @@
 import express from 'express';
 const router = express.Router();
-import { userController, registerController, productController } from '../controllers';
+import { userController, registerController, productController, refreshController } from '../controllers';
+import  auth  from '../middlewares/auth';
+import admin from '../middlewares/admin';
+
 
 // api user interface
 router.get('/user', userController.index);
-router.delete('/user/:id', userController.delete);
+router.get('/me', auth, userController.me);
+router.delete('/user/:id', [auth, admin], userController.delete);
 
+// api refresh token interface
+router.post('/refresh', refreshController.refresh);
 
 // api register interface
 router.post('/register', registerController.register);
 
 // api products interface
 
-router.post('/products', productController.store);
-router.put('/products/:id',  productController.update);
-router.delete('/products/:id',  productController.delete);
+router.post('/products', [auth, admin], productController.store);
+router.put('/products/:id', [auth, admin], productController.update);
+router.delete('/products/:id', [auth, admin], productController.delete);
 router.get('/products', productController.index);
 router.get('/products/:id', productController.show);
+
+
+
+
+
+// router.post('/login', loginController.login);
+// router.post('/logout', auth, loginController.logout);
+
+
 
 export default router;
