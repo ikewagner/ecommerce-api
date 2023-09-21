@@ -1,7 +1,7 @@
 import express from "express";
 import routes from "./routes";
 import mongoose from "mongoose";
-import cors from "cors"; // Importe o pacote CORS
+import cors from "cors";
 
 // Database connection
 const main = async () => {
