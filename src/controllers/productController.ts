@@ -36,11 +36,18 @@ const productController = {
       typeof req.query.page === "string" ? parseInt(req.query.page) : 1;
     const limit =
       typeof req.query.limit === "string" ? parseInt(req.query.limit) : 5;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const skip = (page - 1) * limit;
+      const category = req.query.category as string; // Add this line to get the category query parameter
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const skip = (page - 1) * limit;
+    
+      const query: { category?: string } = {};
+    
+      if (category) {
+        query['category'] = category; // Add category to query if it exists
+      }
 
     try {
-      documents = await Product.find()
+      documents = await Product.find(query)
         .select("-updatedAt -__v")
         .sort({ _id: -1 })
         .skip(skip)
