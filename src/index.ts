@@ -1,14 +1,20 @@
 import express from "express";
 import routes from "./routes";
 import mongoose from "mongoose";
-
+import cors from "cors"; // Importe o pacote CORS
 
 // Database connection
-
 const main = async () => {
   const app = express();
 
-  const MONGODB_URL: string = process.env.MONGODB_URL || 'mongodb+srv://ike:1KLqDGi6TTdTMkAt@ecommerce-ike.u4hfc3x.mongodb.net/';
+  app.use((req, res, next) => {
+    // Configuração do CORS
+    res.header("Access-Control-Allow-Origin", "*");
+    app.use(cors()); // Isso permite o acesso de qualquer origem
+    next();
+  });
+
+  const MONGODB_URL: string = process.env.MONGODB_URL || ""
 
   mongoose.connect(MONGODB_URL || "", { monitorCommands: true });
 
@@ -20,15 +26,9 @@ const main = async () => {
 
   const port = process.env.PORT || "6452";
 
-  app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://ecommerce-ike-v2.vercel.app');
-    next();
-  });
-
-
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
-  app.use('/api', routes);
+  app.use("/api", routes);
 
   app.listen(port, () => console.log("listening on port: " + port));
 };
