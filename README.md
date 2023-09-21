@@ -20,3 +20,8 @@
 - PUT /products/:id - edita um produto
 - DELETE /products/:id - deleta um produto
 - GET /products/:id - retorna o produto por id
+
+
+## EXEMPLOS 
+
+https://ecommerce-api-production-b767.up.railway.app/api/products
