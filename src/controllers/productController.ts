@@ -40,8 +40,8 @@ const productController = {
     const skip = (page - 1) * limit;
 
     try {
-        documents = await Product.find()
-        .select('-updatedAt -__v')
+      documents = await Product.find()
+        .select("-updatedAt -__v")
         .sort({ _id: -1 })
         .skip(skip)
         .limit(limit);

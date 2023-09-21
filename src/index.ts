@@ -20,6 +20,11 @@ const main = async () => {
 
   const port = process.env.PORT || "6452";
 
+  app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'https://ecommerce-ike-v2.vercel.app');
+    next();
+  });
+
 
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
