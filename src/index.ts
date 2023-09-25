@@ -2,6 +2,7 @@ import express from "express";
 import routes from "./routes";
 import mongoose from "mongoose";
 import cors from "cors";
+import  removeExpiredCartItems  from "./../src/middlewares/removeExpiredCartItems";
 
 // Database connection
 const main = async () => {
@@ -14,7 +15,7 @@ const main = async () => {
     next();
   });
 
-  const MONGODB_URL: string = process.env.MONGODB_URL || ""
+  const MONGODB_URL: string = process.env.MONGODB_URL || "";
 
   mongoose.connect(MONGODB_URL || "", { monitorCommands: true });
 
@@ -25,6 +26,9 @@ const main = async () => {
   });
 
   const port = process.env.PORT || "6452";
+
+  // Chame a função de limpeza de carrinho aqui (após a conexão com o banco de dados)
+  await removeExpiredCartItems();
 
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());

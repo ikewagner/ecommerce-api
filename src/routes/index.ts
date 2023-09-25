@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { userController, registerController, productController, refreshController } from '../controllers';
+import { userController, registerController, productController, refreshController, cartController } from '../controllers';
 import  auth  from '../middlewares/auth';
 import admin from '../middlewares/admin';
 
@@ -15,6 +15,10 @@ router.post('/refresh', refreshController.refresh);
 
 // api register interface
 router.post('/register', registerController.register);
+
+
+router.post('/cart/add/:productId', auth, cartController.addToCart);
+router.get('/cart', auth, cartController.listCartItems);
 
 // api products interface
 
