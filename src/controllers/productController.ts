@@ -1,21 +1,29 @@
 import { Product } from "../models";
 import CustomErrorHandler from "../services/CustomErrorHandler";
 import { Request, Response, NextFunction } from "express";
+import slugify from "slugify";
+
 
 const productController = {
   async store(req: Request, res: Response, next: NextFunction) {
-    const { name, desciption, price, size, discount, category, image } =
+    const { name, description, price, size, discount, category, image } =
       req.body;
     let document;
+
+     // Criar o slug a partir do nome do produto
+    const slug = slugify(name, { lower: true });
+  
+
     try {
       document = await Product.create({
         name,
-        desciption,
+        description,
         price,
         size,
         discount,
         category,
         image,
+        slug
       });
     } catch (err) {
       return next(err);
@@ -59,17 +67,18 @@ const productController = {
   },
   async show(req: Request, res: Response, next: NextFunction) {
     let document;
+
+    const { slug } = req.params; // Capturar o slug dos parâmetros da URL
+  
     try {
-      document = await Product.findOne({ _id: req.params.id }).select(
-        "-updatedAt -__v"
-      );
+      document = await Product.findOne({ slug }).select("-updatedAt -__v");
     } catch (err) {
       return next(CustomErrorHandler.serverError());
     }
     return res.json(document);
   },
   async update(req: Request, res: Response, next: NextFunction) {
-    const { name, desciption, price, size, discount, category, image } =
+    const { name, desciption, price, size, discount, category, image, slug} =
       req.body;
     let document;
     try {
@@ -83,6 +92,7 @@ const productController = {
           discount,
           category,
           image,
+          slug
         },
         { new: true }
       );
