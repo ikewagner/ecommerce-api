@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { userController, registerController, productController, refreshController, cartController } from '../controllers';
+import { userController, registerController, productController, refreshController, cartController, loginController } from '../controllers';
 import  auth  from '../middlewares/auth';
 import admin from '../middlewares/admin';
 
@@ -28,12 +28,8 @@ router.delete('/products/:id', [auth, admin], productController.delete);
 router.get('/products', productController.index);
 router.get('/products/:slug', productController.show);
 
-
-
-
-
-// router.post('/login', loginController.login);
-// router.post('/logout', auth, loginController.logout);
+router.post('/login', loginController.login);
+router.post('/logout', auth, loginController.logout);
 
 
 

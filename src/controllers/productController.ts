@@ -3,16 +3,14 @@ import CustomErrorHandler from "../services/CustomErrorHandler";
 import { Request, Response, NextFunction } from "express";
 import slugify from "slugify";
 
-
 const productController = {
   async store(req: Request, res: Response, next: NextFunction) {
     const { name, description, price, size, discount, category, image } =
       req.body;
     let document;
 
-     // Criar o slug a partir do nome do produto
+    // Criar o slug a partir do nome do produto
     const slug = slugify(name, { lower: true });
-  
 
     try {
       document = await Product.create({
@@ -23,7 +21,7 @@ const productController = {
         discount,
         category,
         image,
-        slug
+        slug,
       });
     } catch (err) {
       return next(err);
@@ -44,15 +42,15 @@ const productController = {
       typeof req.query.page === "string" ? parseInt(req.query.page) : 1;
     const limit =
       typeof req.query.limit === "string" ? parseInt(req.query.limit) : 5;
-      const category = req.query.category as string; // Add this line to get the category query parameter
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const skip = (page - 1) * limit;
-    
-      const query: { category?: string } = {};
-    
-      if (category) {
-        query['category'] = category; // Add category to query if it exists
-      }
+    const category = req.query.category as string; // Add this line to get the category query parameter
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const skip = (page - 1) * limit;
+
+    const query: { category?: string } = {};
+
+    if (category) {
+      query["category"] = category; // Add category to query if it exists
+    }
 
     try {
       documents = await Product.find(query)
@@ -69,7 +67,7 @@ const productController = {
     let document;
 
     const { slug } = req.params; // Capturar o slug dos parâmetros da URL
-  
+
     try {
       document = await Product.findOne({ slug }).select("-updatedAt -__v");
     } catch (err) {
@@ -78,7 +76,7 @@ const productController = {
     return res.json(document);
   },
   async update(req: Request, res: Response, next: NextFunction) {
-    const { name, desciption, price, size, discount, category, image, slug} =
+    const { name, desciption, price, size, discount, category, image, slug } =
       req.body;
     let document;
     try {
@@ -92,7 +90,7 @@ const productController = {
           discount,
           category,
           image,
-          slug
+          slug,
         },
         { new: true }
       );
