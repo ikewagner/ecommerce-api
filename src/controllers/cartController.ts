@@ -4,8 +4,8 @@ import CustomErrorHandler from "../services/CustomErrorHandler";
 import CartItem from "../models/cart";
 import User from '../models/user';
 
-
 const cartController = {
+
   async addToCart(req: Request, res: Response, next: NextFunction) {
     const { _id } = req.params;
 
@@ -52,6 +52,7 @@ const cartController = {
       return next(CustomErrorHandler.serverError());
     }
   },
+
   async removeCartItem(req: Request, res: Response, next: NextFunction) {
     try {
       const { _id } = req.params;
@@ -72,9 +73,6 @@ const cartController = {
       return next(CustomErrorHandler.serverError());
     }
   },
-
-  
-  // Implemente outras funções do carrinho, como listar itens, remover itens, etc.
 };
 
 export default cartController;
